@@ -58,12 +58,12 @@ globalThis.PLACES = [
     featured: false, verify: "3D·동작 확인 필요"
   },
   {
-    id: "today-mountain", name: "오늘의 산 (준비 중)", type: "산", url: "",
+    id: "today-mountain", name: "오늘의 산", type: "산", url: "",   // hidden: 완성 전까지 어디에도 안 보임. 공개 때 hidden 지우고 url 채움
     maker: "요즘장소 × 노티엄", lang: "ko", addedAt: "2026-11-01", lineage: 8,
     actions: ["오르기", "야호", "정상석 인증샷", "막걸리"], talk: "없음",
     hours: "매일 다른 산", devices: ["모바일"], controls: "버튼 한 번",
     intro: "우리가 만드는 간판 공간. 버튼 한 번으로 오늘의 산을 오르고 정상석 인증샷을 받아 가족 카톡방에 올린다. 5060도 쓸 수 있게 조작을 없앴다.",
-    featured: true, status: "soon"
+    featured: false, status: "soon", hidden: true
   },
   {
     id: "windowswap", name: "WindowSwap", type: "창문", url: "https://window-swap.com/",

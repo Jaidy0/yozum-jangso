@@ -5,12 +5,12 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 const here = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
-require(join(here, "..", "data", "places.js"));
+require(join(here, "..", "data", "places.js")); require(join(here, "..", "assets", "icons.js"));
 require(join(here, "..", "data", "config.js"));
 const out = join(here, "..", "badges"); mkdirSync(out, { recursive: true });
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 let n = 0;
-for (const p of globalThis.PLACES) {
+for (const p of globalThis.PLACES.filter(p => !p.hidden)) {
   if (!p.url) continue;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="112" viewBox="0 0 360 112">
 <defs><style>text{font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}</style></defs>
@@ -19,7 +19,7 @@ for (const p of globalThis.PLACES) {
 <text x="26" y="40" font-size="13" font-weight="600" fill="#F4F1EA" fill-opacity=".85">요즘장소 등재 · 온라인 장소 디렉토리</text>
 <text x="26" y="72" font-size="24" font-weight="800" fill="#FFFFFF">${esc(p.name)}</text>
 <text x="26" y="92" font-size="12" fill="#F4F1EA" fill-opacity=".8">${esc(p.type)} · ${esc(p.addedAt)} 등록 · 요즘장소에서 보기</text>
-<circle cx="318" cy="56" r="22" fill="#F4F1EA"/><text x="318" y="64" font-size="22" text-anchor="middle">🪷</text>
+<circle cx="318" cy="56" r="22" fill="#F4F1EA"/><g transform="translate(306 44)" fill="none" stroke="#1E6F5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${globalThis.LUCIDE.landmark}</g>
 </svg>`;
   writeFileSync(join(out, p.id + ".svg"), svg); n++;
 }

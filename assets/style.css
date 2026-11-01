@@ -84,3 +84,14 @@ pre.out{background:#1C1B18;color:#E9E5DC;border-radius:12px;padding:12px;font-si
 .wanted{display:flex;gap:8px;flex-wrap:wrap}
 .wanted span{background:#fff;border:1.5px dashed var(--line);border-radius:999px;padding:8px 12px;font-size:13px;color:var(--muted)}
 .cta .btn span{max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Lucide 아이콘 */
+.ic{display:inline-block;vertical-align:-0.18em;flex:none}
+h2 .ic{color:var(--green)}
+.card .thumb .ic{width:32px;height:32px;color:var(--green);opacity:.65}
+.hero .ic{width:72px;height:72px;color:var(--green);opacity:.45}
+.hero .back .ic{width:20px;height:20px;color:var(--ink);opacity:1}
+.tabbar a i{display:flex;justify-content:center;margin-bottom:2px}
+.chip .ic{vertical-align:-0.2em;margin-right:2px}
+.btn .ic{vertical-align:-0.2em}
+.tl .n .ic{vertical-align:-0.15em;margin-right:2px}

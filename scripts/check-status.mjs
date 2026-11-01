@@ -8,7 +8,7 @@ import { dirname, join } from "node:path";
 const here = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 require(join(here, "..", "data", "places.js"));
-const places = globalThis.PLACES;
+const places = globalThis.PLACES.filter(p => !p.hidden);
 const UA = "yozum-jangso-status/0.1 (+https://yozum-jangso.example/about-status)";
 const TIMEOUT = 12000;
 
