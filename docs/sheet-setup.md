@@ -1,4 +1,7 @@
-# 시트 연결 (10분)
+# 시트 연결 (10분) — 2026-11-02 연결됨
+
+연결된 시트: https://docs.google.com/spreadsheets/d/11Lwvd8i6oKxolt4fKGNmjPx5E_uNlzETGMkZBH5kl0w/edit · 스크립트 「요즘장소 접수」 · 웹앱 URL 은 data/config.js
+
 
 1. Google 스프레드시트 새로 만들기 → 주소의 `/d/<ID>/` 복사
 2. 확장 프로그램 → Apps Script → `scripts/apps-script.gs` 내용 붙여넣기, `SHEET_ID`·`NOTIFY_TO` 채우기
