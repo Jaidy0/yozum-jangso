@@ -1,19 +1,21 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="assets/style.css"><title>내려 주세요 · 요즘장소</title></head><body><div class="phone">
-<header class="top"><div class="brand">내려 주세요 <small>즉시 비공개</small></div></header>
+<header class="top"><div class="brand" id="hd">내려 주세요 <small>즉시 비공개</small></div></header>
 <main><section>
-<p class="hint">제작자 본인이거나 권리가 있는 분이 요청하면 확인 즉시 비공개합니다. 이유는 묻지 않습니다.</p>
+<p class="hint" id="hint">제작자 본인이거나 권리가 있는 분이 요청하면 확인 즉시 비공개합니다. 이유는 묻지 않습니다.</p>
 <form id="rf">
 <div class="f"><label>내릴 장소 URL 또는 이름</label><input name="target" required id="t"></div>
-<div class="f"><label>연락 이메일</label><input name="email" type="email" required></div>
+<div class="f" id="emailf"><label>연락 이메일</label><input name="email" type="email" required></div>
 <div class="f"><label>메모 (선택)</label><textarea name="memo"></textarea></div>
-<button class="btn primary block" type="submit">내려 주세요</button>
+<button class="btn primary block" type="submit" id="sb">내려 주세요</button>
 </form><div id="o"></div>
 </section></main>
 <footer class="foot">요즘장소는 링크와 우리가 쓴 소개만 싣습니다. 원본의 글·이미지·장소 목록을 복사하지 않고, 화면을 iframe 으로 끼워 넣지 않습니다.<br><a href="remove.html">내려 주세요</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="submit.html">온라인 장소 등록</a></footer>
 <nav class="tabbar" id="tabbar"></nav><script src="data/config.js"></script><script src="data/places.js"></script><script src="data/status.js"></script><script src="assets/app.js"></script></body></html>
 <script>
 const EP=(globalThis.CONFIG&&CONFIG.SUBMIT_ENDPOINT)||"";
-document.getElementById("rf").onsubmit=async e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target).entries());o.kind="remove";o.submittedAt=new Date().toISOString();const out=document.getElementById("o");
- if(EP){try{await fetch(EP,{method:"POST",mode:"no-cors",body:JSON.stringify(o)});out.innerHTML='<div class="notice">접수됐습니다. 확인 즉시 내립니다.</div>';}catch{out.innerHTML='<div class="notice">전송 실패. 잠시 뒤 다시 시도해 주세요.</div>';}}
+const KIND=new URLSearchParams(location.search).get("kind")==="broken"?"broken":"remove";
+if(KIND==="broken"){document.title="안 열려요 · 요즘장소";document.getElementById("hd").innerHTML='안 열려요 <small>링크 신고</small>';document.getElementById("hint").textContent="들어가 봤는데 안 열리면 알려 주세요. 확인해서 닫힌 곳은 내립니다. 이메일은 안 적어도 됩니다.";document.getElementById("sb").textContent="안 열려요";document.querySelector("#emailf input").required=false;}
+document.getElementById("rf").onsubmit=async e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target).entries());o.kind=KIND;o.submittedAt=new Date().toISOString();const out=document.getElementById("o");
+ if(EP){try{await fetch(EP,{method:"POST",mode:"no-cors",body:JSON.stringify(o)});out.innerHTML=KIND==='broken'?'<div class="notice">고맙습니다. 확인해서 안 열리면 내립니다.</div>':'<div class="notice">접수됐습니다. 확인 즉시 내립니다.</div>';}catch{out.innerHTML='<div class="notice">전송 실패. 잠시 뒤 다시 시도해 주세요.</div>';}}
  else out.innerHTML='<div class="notice">시트 연결 전 미리보기입니다.</div><pre class="out">'+JSON.stringify(o,null,1).replace(/</g,"&lt;")+'</pre>';};
 const id=new URLSearchParams(location.search).get("id");const p=(globalThis.PLACES||[]).find(x=>x.id===id);if(p)document.getElementById("t").value=p.url||p.name;</script>

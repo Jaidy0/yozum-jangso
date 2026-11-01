@@ -1,6 +1,7 @@
 // 요즘장소 공통 스크립트. 데이터는 data/places.js(globalThis.PLACES) + data/status.js(globalThis.STATUS)
 const ICON = {절:"🪷",찜질방:"🧖",사우나:"♨️",성당:"🕯️",교회:"⛪",캠핑장:"🏕️",모닥불:"🔥",산:"⛰️",창문:"🪟",라디오:"📻",드라이브:"🚗",여행:"🌍",카페:"☕",기타:"✨"};
-const LABEL = {open:"열림",waiting:"웨이팅",down:"다운",soon:"준비 중"};
+const LABEL = {down:"안 열림",soon:"준비 중"};
+const checkedDate = () => S.checkedAt ? new Date(S.checkedAt).toLocaleDateString("ko-KR",{timeZone:"Asia/Seoul",month:"numeric",day:"numeric"}) : null;
 const S = globalThis.STATUS || {checkedAt:null,places:{}};
 const P = globalThis.PLACES || [];
 const st = p => (S.places[p.id] && S.places[p.id].status) || p.status || "unknown";
@@ -12,7 +13,7 @@ const toggleSave = id => { const a = saved(); const i = a.indexOf(id); i < 0 ? a
 const clicks = () => JSON.parse(localStorage.getItem("yj.clicks") || "{}");
 const countClick = id => { const c = clicks(); c[id] = (c[id]||0)+1; localStorage.setItem("yj.clicks", JSON.stringify(c)); };
 
-function badge(p){ const s = st(p); return `<span class="badge ${s}">${LABEL[s]||s}</span>`; }
+function badge(p){ const s = st(p); return LABEL[s] ? `<span class="badge ${s}">${LABEL[s]}</span>` : ""; }
 function thumb(p){ const u = og(p); return `<div class="thumb">${u ? `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : (ICON[p.type]||ICON.기타)}</div>`; }
 function card(p){
   return `<a class="card" href="places/${encodeURIComponent(p.id)}.html">
@@ -23,32 +24,32 @@ function card(p){
       <div class="acts">${p.actions.slice(0,4).map(a=>`<span>${esc(a)}</span>`).join("")}</div>
     </div></a>`;
 }
-function checkedAgo(){ if(!S.checkedAt) return "상태 미확인"; const m = Math.round((Date.now()-new Date(S.checkedAt))/60000); return m < 1 ? "방금 확인" : m < 60 ? `${m}분 전 확인` : `${Math.round(m/60)}시간 전 확인`; }
+function checkedLine(){ const d = checkedDate(); return d ? `링크는 등록·갱신할 때 확인합니다 · 최근 확인 ${d}` : "링크는 등록·갱신할 때 확인합니다"; }
 
 function renderHome(){
   const el = document.getElementById("home"); if(!el) return;
   const type = qs("type");
   const types = ["전체", ...new Set(P.map(p=>p.type))];
   const list = P.filter(p => !type || type==="전체" || p.type===type);
-  const open = list.filter(p => st(p)==="open");
+  const live = list.filter(p => st(p)!=="soon" && st(p)!=="down");
   const fresh = [...list].filter(p=>!p.featured).sort((a,b)=>b.addedAt.localeCompare(a.addedAt)).slice(0,5);
   const feat = P.find(p=>p.featured);
   el.innerHTML = `
   <section>
     <div class="summary">
-      <div><b>${P.filter(p=>st(p)==="open").length}</b><span>지금 열려 있어요</span></div>
-      <div><b>${P.filter(p=>st(p)==="waiting").length}</b><span>웨이팅</span></div>
+      <div><b>${P.filter(p=>st(p)!=="soon").length}</b><span>등록된 온라인 장소</span></div>
+      <div><b>${P.filter(p=>p.overseas).length}</b><span>해외</span></div>
       <div><b>${P.filter(p=>p.addedAt>="2026-10-25").length}</b><span>이번 주 새 공간</span></div>
     </div>
-    <p class="hint">상태는 10분에 한 번 우리 서버가 확인합니다 · ${checkedAgo()}</p>
+    <p class="hint">${checkedLine()}</p>
   </section>
   ${feat ? `<section><div class="feature"><div class="eyebrow">요즘장소가 만드는 공간</div><div class="title">${esc(feat.name)}</div><p>${esc(feat.intro)}</p><a class="btn" href="places/${feat.id}.html">미리 보기</a><div class="mt">${ICON[feat.type]}</div></div></section>` : ""}
   <section>
     <div class="chips">${types.map(t=>`<a class="chip ${(!type&&t==="전체")||type===t?"on":""}" href="?type=${encodeURIComponent(t)}">${ICON[t]||""} ${t}</a>`).join("")}</div>
   </section>
   <section>
-    <h2>🟢 지금 열려 있어요 <span class="count">${open.length}곳</span></h2>
-    ${open.map(card).join("") || '<p class="hint">이 종류는 지금 열린 곳이 없어요.</p>'}
+    <h2>🪷 온라인 장소 <span class="count">${live.length}곳</span></h2>
+    ${live.map(card).join("") || '<p class="hint">이 종류는 아직 등록된 곳이 없어요.</p>'}
   </section>
   <section>
     <h2>✨ 새로 생긴 곳 <span class="count">최근 등록</span></h2>
@@ -83,12 +84,13 @@ function renderDetail(){
       <div><small>개방 시간</small><b>${esc(p.hours)}</b></div>
       <div><small>기기</small><b>${p.devices.join(" · ")}</b></div>
       <div><small>조작</small><b>${esc(p.controls)}</b></div>
-      <div><small>상태 확인</small><b>${s==="soon"?"—":`${LABEL[s]} · ${info.code||"-"} · ${info.ms||"-"}ms`}</b></div>
+      <div><small>링크 확인</small><b>${s==="soon"?"—":(checkedDate()||"—")}</b></div>
       <div><small>오늘 여기서 나간 사람</small><b>${s==="soon"?"—":(clicks()[p.id]||0)+"명 (이 기기)"}</b></div>
     </div>
-    <p class="small">「오늘 여기서 나간 사람」은 요즘장소에서 입장하기를 누른 수이고 원본 접속자 수가 아닙니다. 미리보기는 원본의 og:image 를 그대로 불러오며 저장하지 않습니다.</p>
+    <p class="small">「오늘 여기서 나간 사람」은 요즘장소에서 입장하기를 누른 수이고 원본 접속자 수가 아닙니다. 미리보기는 원본의 og:image 를 그대로 불러오며 저장하지 않습니다. 링크는 등록·갱신할 때 확인합니다.</p>
     <div class="row" style="margin:12px 0 4px">
       <button class="btn ghost" onclick="toggleSave('${p.id}');location.reload()">${isSaved?"★ 저장됨":"☆ 저장"}</button>
+      <a class="btn ghost" href="remove.html?id=${p.id}&kind=broken">안 열려요</a>
       <a class="btn ghost" href="remove.html?id=${p.id}">내려 주세요</a>
     </div>
   </section>
