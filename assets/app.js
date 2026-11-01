@@ -52,7 +52,7 @@ function renderHome(){
   <section>
     <h2>${icon("sparkles")} 새로 생긴 곳 <span class="count">최근 등록</span></h2>
     ${fresh.map(card).join("")}
-  </section>
+    <p class="hint" style="text-align:center;margin:16px 0 4px"><a href="wishes.html" style="color:var(--green);font-weight:700">이런 장소 있었으면 → 모두의 의뢰 보기</a></p>
   </section>`;
 }
 

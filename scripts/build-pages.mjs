@@ -15,7 +15,7 @@ const checkedDate = S.checkedAt ? new Date(S.checkedAt).toLocaleDateString("ko-K
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 mkdirSync(join(root, "places"), { recursive: true });
 
-const FOOT = `<footer class="foot">요즘장소는 링크와 우리가 쓴 소개만 싣습니다. 원본의 글·이미지·장소 목록을 복사하지 않고, 화면을 iframe 으로 끼워 넣지 않습니다.<br><a href="../lineage.html">유행의 흐름</a> · <a href="../remove.html">내려 주세요</a> · <a href="../privacy.html">개인정보처리방침</a> · <a href="../submit.html">내 장소 등록하기</a></footer>`;
+const FOOT = `<footer class="foot">요즘장소는 링크와 우리가 쓴 소개만 싣습니다. 원본의 글·이미지·장소 목록을 복사하지 않고, 화면을 iframe 으로 끼워 넣지 않습니다.<br><a href="../wishes.html">이런 장소 있었으면</a> · <a href="../submit.html">내 장소 등록하기</a> · <a href="../inquire.html">공간 제작 문의</a><br><a href="../lineage.html">유행의 흐름</a> · <a href="../remove.html">내려 주세요</a> · <a href="../privacy.html">개인정보처리방침</a></footer>`;
 
 for (const p of P) {
   const st = S.places[p.id] || {}; const s = st.status || p.status || "unknown";
@@ -55,6 +55,6 @@ ${FOOT}
 </body></html>`;
   writeFileSync(join(root, "places", p.id + ".html"), html);
 }
-const pages = ["","lineage","submit","privacy", ...P.map(p=>`places/${p.id}`)];
+const pages = ["","wishes","submit","inquire","lineage","privacy", ...P.map(p=>`places/${p.id}`)];
 writeFileSync(join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(u=>`  <url><loc>${C.SITE_URL}${u?"/"+u:"/"}</loc><lastmod>${new Date().toISOString().slice(0,10)}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 console.log("pages", P.length, "sitemap", pages.length);

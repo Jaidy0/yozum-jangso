@@ -1,7 +1,7 @@
 {
-  "tool_name": "mcp__playwright__browser_resize",
-  "tool_input_preview": "{\"width\":430,\"height\":900}",
-  "error": "### Error\nError: Browser is already in use for /Users/jaidy/Library/Caches/ms-playwright-mcp/mcp-chrome-60b54f6, use --isolated to run multiple instances of the same browser",
-  "timestamp": "2026-11-01T08:33:43.408Z",
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"python3 -I - <<'PYEOF'\\nimport pathlib,re\\nW=lambda p,s: (pathlib.Path(p).write_text(s), print(\\\"write\\\",p))\\n\\nHEAD='<!doctype html><html lang=\\\"ko\\\"><head><meta charset=\\\"utf-8\\\"><meta n...",
+  "error": "Exit code 1\nwrite wishes.html\nwrite inquire.html\nwrite scripts/apps-script.gs\nwrite docs/sheet-setup.md\nfooter index.html\nfooter lineage.html\nfooter saved.html\nfooter submit.html\nfooter remove.html\nfooter privacy.html\nfooter place.html\nsubmit entry\nTraceback (most recent call last):\n  File \"<stdin>\", line 198, in <module>\nAssertionError: home tail\nnode:internal/modules/esm/get_format:236\n  throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath);\n        ^\n\nTypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unk...",
+  "timestamp": "2026-11-01T19:47:30.590Z",
   "retry_count": 1
 }

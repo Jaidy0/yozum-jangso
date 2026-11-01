@@ -1,0 +1,54 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><link rel="stylesheet" href="assets/style.css"><meta name="description" content="아직 없는 온라인 장소를 적어 두는 곳. 다른 사람이 원하면 「나도」를 누르고, 제작자는 여기서 만들 것을 고릅니다."><title>이런 장소 있었으면 · 요즘장소</title></head><body><div class="phone">
+<header class="top"><div class="brand">이런 장소 있었으면 <small>모두의 의뢰</small></div></header>
+<main><section>
+<p class="hint">아직 없는 온라인 장소를 한 줄로 적어 두세요. 다른 사람이 원하면 「나도」가 쌓이고, 제작자는 여기서 만들 것을 고릅니다. 많이 모인 의뢰는 요즘장소가 제작자에게 알립니다.</p>
+<form id="wf">
+<div class="f"><label>어떤 종류</label><select name="type"><option>집<option>절<option>찜질방<option>사우나<option>성당<option>교회<option>캠핑장<option>산<option>카페<option>거리<option>학교<option>기타</select></div>
+<div class="f"><label>어떤 장소 (한 줄, 80자)</label><input name="text" required maxlength="80" placeholder="예: 시골 할머니집 마루에 누워 매미 소리 듣기"></div>
+<div class="f"><label>닉네임 (선택)</label><input name="nick" maxlength="12" placeholder="익명"></div>
+<button class="btn primary block" type="submit" id="wb">의뢰 올리기</button>
+</form><div id="wo"></div>
+</section>
+<section>
+<div class="chips" id="sort"><a class="chip on" data-s="votes">많이 원하는 순</a><a class="chip" data-s="new">최근 순</a></div>
+<div id="wl"><p class="hint">불러오는 중…</p></div>
+</section></main>
+<footer class="foot">요즘장소는 링크와 우리가 쓴 소개만 싣습니다. 원본의 글·이미지·장소 목록을 복사하지 않고, 화면을 iframe 으로 끼워 넣지 않습니다.<br><a href="wishes.html">이런 장소 있었으면</a> · <a href="submit.html">내 장소 등록하기</a> · <a href="inquire.html">공간 제작 문의</a><br><a href="lineage.html">유행의 흐름</a> · <a href="remove.html">내려 주세요</a> · <a href="privacy.html">개인정보처리방침</a></footer><nav class="tabbar" id="tabbar"></nav><script src="data/config.js"></script><script src="data/places.js"></script><script src="data/status.js"></script><script src="assets/icons.js"></script><script src="assets/app.js"></script>
+<script>
+const EP=(globalThis.CONFIG&&CONFIG.SUBMIT_ENDPOINT)||"";
+const TYPE_ICON2={집:"house",거리:"map-pin",학교:"landmark"};
+const ti=t=>icon(TYPE_ICON2[t]||globalThis.TYPE_ICON[t]||"sparkles",14);
+let items=[],sort="votes";
+const voted=()=>JSON.parse(localStorage.getItem("yj.voted")||"[]");
+const fmt=ms=>{const d=new Date(ms);return `${d.getMonth()+1}/${d.getDate()}`};
+function render(){
+  const el=document.getElementById("wl");
+  if(!EP){el.innerHTML='<div class="notice">시트 연결 전 미리보기입니다. 연결되면 여기에 모두의 의뢰가 보여요.</div>';return;}
+  if(!items.length){el.innerHTML='<p class="hint">아직 의뢰가 없어요. 첫 번째로 적어 보세요.</p>';return;}
+  const v=voted();
+  const list=[...items].sort((a,b)=>sort==="votes"?(b.votes-a.votes)||(b.at-a.at):(b.at-a.at));
+  el.innerHTML=list.map(w=>`<div class="wish"><div><div class="wt">${ti(w.type)} ${esc(w.type)} <span class="wn">${esc(w.nick||"익명")} · ${fmt(w.at)}</span></div><div class="wx">${esc(w.text)}</div></div><button class="vote ${v.includes(w.id)?"on":""}" data-id="${esc(w.id)}" ${v.includes(w.id)?"disabled":""}>${icon("star",14)} 나도 ${w.votes||0}</button></div>`).join("");
+  el.querySelectorAll(".vote").forEach(b=>b.onclick=()=>vote(b.dataset.id));
+}
+async function load(){
+  if(!EP){render();return;}
+  try{const r=await fetch(EP+(EP.includes("?")?"&":"?")+"list=wishes",{redirect:"follow"});items=await r.json();}
+  catch{items=[];document.getElementById("wl").innerHTML='<p class="hint">목록을 못 불러왔어요. 잠시 뒤 다시 열어 주세요.</p>';return;}
+  render();
+}
+async function vote(id){
+  const v=voted(); if(v.includes(id))return; v.push(id); localStorage.setItem("yj.voted",JSON.stringify(v));
+  const w=items.find(x=>x.id===id); if(w)w.votes=(w.votes||0)+1; render();
+  try{await fetch(EP,{method:"POST",body:JSON.stringify({kind:"vote",id})});}catch{}
+}
+document.getElementById("wf").onsubmit=async e=>{
+  e.preventDefault(); const o=Object.fromEntries(new FormData(e.target).entries()); o.kind="wish"; o.submittedAt=new Date().toISOString();
+  const out=document.getElementById("wo"); const btn=document.getElementById("wb"); btn.disabled=true;
+  if(EP){ try{await fetch(EP,{method:"POST",body:JSON.stringify(o)}); out.innerHTML='<div class="notice">올라갔어요. 같은 생각인 사람이 「나도」를 누르면 위로 올라갑니다.</div>'; e.target.reset(); setTimeout(load,1200);}
+    catch{out.innerHTML='<div class="notice">전송 실패. 잠시 뒤 다시 시도해 주세요.</div>';} }
+  else out.innerHTML='<div class="notice">시트 연결 전 미리보기입니다. 아래 내용이 접수됩니다.</div><pre class="out">'+JSON.stringify(o,null,1).replace(/</g,"&lt;")+'</pre>';
+  btn.disabled=false; return false;
+};
+document.querySelectorAll("#sort .chip").forEach(c=>c.onclick=()=>{sort=c.dataset.s;document.querySelectorAll("#sort .chip").forEach(x=>x.classList.toggle("on",x===c));render();});
+load();
+</script></body></html>
