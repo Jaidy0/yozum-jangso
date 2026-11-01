@@ -18,7 +18,7 @@ for (const p of globalThis.PLACES) {
 <rect x="10" y="10" width="340" height="92" rx="12" fill="none" stroke="#F4F1EA" stroke-opacity=".35"/>
 <text x="26" y="40" font-size="13" font-weight="600" fill="#F4F1EA" fill-opacity=".85">요즘장소 등재 · 온라인 장소 디렉토리</text>
 <text x="26" y="72" font-size="24" font-weight="800" fill="#FFFFFF">${esc(p.name)}</text>
-<text x="26" y="92" font-size="12" fill="#F4F1EA" fill-opacity=".8">${esc(p.type)} · ${esc(p.addedAt)} 등록 · ${esc(globalThis.CONFIG.SITE_URL.replace(/^https?:\/\//,""))}/places/${p.id}.html</text>
+<text x="26" y="92" font-size="12" fill="#F4F1EA" fill-opacity=".8">${esc(p.type)} · ${esc(p.addedAt)} 등록 · 요즘장소에서 보기</text>
 <circle cx="318" cy="56" r="22" fill="#F4F1EA"/><text x="318" y="64" font-size="22" text-anchor="middle">🪷</text>
 </svg>`;
   writeFileSync(join(out, p.id + ".svg"), svg); n++;

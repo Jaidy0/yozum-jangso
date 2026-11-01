@@ -83,3 +83,4 @@ form textarea{min-height:88px}
 pre.out{background:#1C1B18;color:#E9E5DC;border-radius:12px;padding:12px;font-size:11px;overflow:auto;white-space:pre-wrap}
 .wanted{display:flex;gap:8px;flex-wrap:wrap}
 .wanted span{background:#fff;border:1.5px dashed var(--line);border-radius:999px;padding:8px 12px;font-size:13px;color:var(--muted)}
+.cta .btn span{max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
