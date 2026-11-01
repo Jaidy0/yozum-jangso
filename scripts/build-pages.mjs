@@ -15,7 +15,7 @@ const checkedDate = S.checkedAt ? new Date(S.checkedAt).toLocaleDateString("ko-K
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 mkdirSync(join(root, "places"), { recursive: true });
 
-const FOOT = `<footer class="foot">요즘장소는 링크와 우리가 쓴 소개만 싣습니다. 원본의 글·이미지·장소 목록을 복사하지 않고, 화면을 iframe 으로 끼워 넣지 않습니다.<br><a href="../remove.html">내려 주세요</a> · <a href="../privacy.html">개인정보처리방침</a> · <a href="../submit.html">온라인 장소 등록</a></footer>`;
+const FOOT = `<footer class="foot">요즘장소는 링크와 우리가 쓴 소개만 싣습니다. 원본의 글·이미지·장소 목록을 복사하지 않고, 화면을 iframe 으로 끼워 넣지 않습니다.<br><a href="../lineage.html">유행의 흐름</a> · <a href="../remove.html">내려 주세요</a> · <a href="../privacy.html">개인정보처리방침</a> · <a href="../submit.html">내 장소 등록하기</a></footer>`;
 
 for (const p of P) {
   const st = S.places[p.id] || {}; const s = st.status || p.status || "unknown";
@@ -46,11 +46,11 @@ ${p.verify ? `<div class="notice">확인 중: ${esc(p.verify)}</div>` : ""}
 </ol>
 <p class="small">미리보기는 원본의 og:image 를 그대로 불러오며 저장하지 않습니다. 링크는 등록·갱신할 때 확인하고, 안 열리면 「안 열려요」로 알려 주세요.</p>
 ${p.url ? `<h2>제작자이신가요?</h2><p class="small">등재 배지를 가져가 스레드·인스타 프로필에 두세요. 링크는 이 페이지로 옵니다.</p><a href="../badges/${p.id}.svg" download><img src="../badges/${p.id}.svg" alt="요즘장소 등재 배지 · ${esc(p.name)}" style="width:100%;max-width:360px;border-radius:12px"></a>` : ""}
-<div class="row" style="margin:12px 0 4px"><a class="btn ghost" href="../remove.html?id=${p.id}&kind=broken">안 열려요</a><a class="btn ghost" href="../remove.html?id=${p.id}">내려 주세요</a><a class="btn ghost" href="../lineage.html">계보 보기</a></div>
+<div class="row" style="margin:12px 0 4px"><a class="btn ghost" href="../remove.html?id=${p.id}&kind=broken">안 열려요</a><a class="btn ghost" href="../remove.html?id=${p.id}">내려 주세요</a></div>
 </section>
 <div class="cta">${p.url ? `<a class="btn primary block" href="${esc(p.url)}" target="_blank" rel="noopener">입장하기 ${icon("arrow-up-right",18)} <span style="font-weight:500;opacity:.8">${esc(new URL(p.url).host)}</span></a>` : `<button class="btn primary block" disabled>준비 중 · 공개되면 1번 자리에</button>`}</div>
 ${FOOT}
-<nav class="tabbar"><a href="../index.html"><i>${icon("house",22)}</i>홈</a><a href="../lineage.html"><i>${icon("git-branch",22)}</i>계보</a><a href="../submit.html"><i>${icon("plus",22)}</i>등록</a><a href="../saved.html"><i>${icon("star",22)}</i>저장</a></nav>
+<nav class="tabbar"><a href="../index.html"><i>${icon("house",22)}</i>홈</a><a href="../submit.html"><i>${icon("plus",22)}</i>내 장소 등록</a><a href="../saved.html"><i>${icon("star",22)}</i>저장</a></nav>
 </div>
 </body></html>`;
   writeFileSync(join(root, "places", p.id + ".html"), html);

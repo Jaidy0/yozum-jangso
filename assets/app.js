@@ -114,7 +114,7 @@ function renderSaved(){
 
 function tabbar(active){
   const el = document.getElementById("tabbar"); if(!el) return;
-  const tabs = [["index.html","house","홈"],["lineage.html","git-branch","계보"],["submit.html","plus","등록"],["saved.html","star","저장"]];
+  const tabs = [["index.html","house","홈"],["submit.html","plus","내 장소 등록"],["saved.html","star","저장"]];
   el.innerHTML = tabs.map(([h,i,t])=>`<a href="${h}" class="${active===h?"on":""}"><i>${icon(i,22)}</i>${t}</a>`).join("");
 }
 
