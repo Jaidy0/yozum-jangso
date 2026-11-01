@@ -1,0 +1,11 @@
+{
+  "name": "yozum-jangso",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check-status.mjs",
+    "build": "node scripts/build-pages.mjs",
+    "badges": "node scripts/make-badges.mjs",
+    "serve": "python3 -m http.server 8765"
+  }
+}

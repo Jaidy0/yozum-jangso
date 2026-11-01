@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="112" viewBox="0 0 360 112">
+<defs><style>text{font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}</style></defs>
+<rect width="360" height="112" rx="18" fill="#1E6F5C"/>
+<rect x="10" y="10" width="340" height="92" rx="12" fill="none" stroke="#F4F1EA" stroke-opacity=".35"/>
+<text x="26" y="40" font-size="13" font-weight="600" fill="#F4F1EA" fill-opacity=".85">요즘장소 등재 · 온라인 장소 디렉토리</text>
+<text x="26" y="72" font-size="24" font-weight="800" fill="#FFFFFF">사우나 고요</text>
+<text x="26" y="92" font-size="12" fill="#F4F1EA" fill-opacity=".8">사우나 · 2026-10-30 등록 · yozum-jangso.pages.dev/places/saunagoyo.html</text>
+<circle cx="318" cy="56" r="22" fill="#F4F1EA"/><text x="318" y="64" font-size="22" text-anchor="middle">🪷</text>
+</svg>

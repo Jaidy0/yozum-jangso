@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__playwright__browser_resize",
+  "tool_input_preview": "{\"width\":430,\"height\":900}",
+  "error": "### Error\nError: Browser is already in use for /Users/jaidy/Library/Caches/ms-playwright-mcp/mcp-chrome-60b54f6, use --isolated to run multiple instances of the same browser",
+  "timestamp": "2026-11-01T08:33:43.408Z",
+  "retry_count": 1
+}
